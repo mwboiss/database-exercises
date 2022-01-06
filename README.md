@@ -1,0 +1,1 @@
+This repository is for performing an exercise in using mysql and git/github.
