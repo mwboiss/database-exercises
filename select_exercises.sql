@@ -3,7 +3,7 @@ SELECT * FROM albums;
 #Answer: 31
 
 #Problem 3b
-SELECT DISTINCT artist from albums;
+SELECT COUNT(DISTINCT artist) from albums;
 #Answer: 23
 
 #Problem 3c
