@@ -37,4 +37,4 @@ SELECT name FROM albums WHERE sales < 20;
 
 #Problem 4f
 SELECT name FROM albums WHERE genre = "Rock";
-#Answer: Sgt. Pepper's Lonely Hearts Club Band, 1, Abbey Road, Born in the U.S.A., Supernatural
+#Answer: Sgt. Pepper's Lonely Hearts Club Band, 1, Abbey Road, Born in the U.S.A., Supernatural. I'm guessing because we used = it will only show where it is specificly Rock, I believe we would want to use the IN statement if we wanted a broader search containing the word Rocky
