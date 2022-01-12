@@ -118,17 +118,15 @@ FROM employees AS e
 	LIMIT 1;
 	
 #Problem 9
-SELECT e.first_name, e.last_name, s.salary, d.dept_name
+SELECT e.first_name, e.last_name, 
+									s.salary, d.dept_name
 FROM employees e
-	JOIN salaries s
-		ON e.emp_no = s.emp_no
-	JOIN dept_manager dm
-		ON dm.emp_no = s.emp_no
-	JOIN departments d
-		ON d.dept_no = dm.dept_no
-	WHERE dm.to_date = '9999-01-01'
+	JOIN salaries s USING(emp_no)
+		JOIN dept_manager dm USING(emp_no)
+			JOIN departments d USING(dept_no)
+WHERE dm.to_date = '9999-01-01'
 	ORDER BY s.salary DESC
-	LIMIT 1;
+		LIMIT 1;
 
 #Problem 10
 SELECT d.dept_name, ROUND(AVG(s.salary), 0) average_salary
@@ -158,7 +156,7 @@ FROM (
 			ON d.dept_no = de.dept_no 
 		WHERE de.to_date = '9999-01-01' AND mn.to_date = '9999-01-01';
 	
-#Problem 12 DID NOT FINISH
+#Problem 12 DID NOT FINISH , Attempts below.
 SELECT d.dept_name 'Department Name', CONCAT(e.first_name, ' ', e.last_name) 'Employee Name', MAX(s.salary) 'Highest Salary'
 FROM departments d
 	JOIN dept_emp de
@@ -174,8 +172,7 @@ FROM departments d
 			ON s.emp_no = de.emp_no
 		JOIN departments AS d
 			ON d.dept_no = de.dept_no
-	)
-	
+	)	
 	GROUP BY d.dept_name;
 
 SELECT hs.Department_Name, CONCAT(e.first_name, ' ', e.last_name) 'Employee Name', hs.Highest_Salary 
@@ -214,11 +211,7 @@ SELECT * FROM employees LIMIT 2;
 SELECT * FROM salaries LIMIT 2;
 SELECT * FROM titles LIMIT 2;
 
-
-*/
-
 SELECT Department, Highest Salary, Employee
-
 FROM departments d
 	JOIN dept_emp de
 		ON de.dept_no = d.dept_no
@@ -226,12 +219,3 @@ FROM departments d
 		ON s.emp_no = de.emp_no
 	JOIN employees e
 		ON e.emp_no = s.emp_no
-	
-
-
-
-
-
-
-
-
