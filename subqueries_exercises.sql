@@ -44,15 +44,26 @@ SELECT CONCAT(first_name, ' ', last_name)
 #Answer: Isamu Legleitner, Karsten Sigstam, Leon DasSarma, Hilary Kambil
 
 #Problem 5
-SELECT emp_no
-	FROM salaries
-		WHERE emp_no IN(
-			SELECT emp_no
-				FROM dept_no
-				WHERE to_date = '9999-01-01')
-			AND salary > salary IN(
-					)
-	
+SELECT DISTINCT s.emp_no
+	FROM salaries s
+		JOIN dept_emp de USING(emp_no)
+	WHERE de.to_date = '9999-01-01' 
+	AND s.salary > (
+			SELECT AVG(salary)
+			FROM salaries
+					);
+
+#Problem 6
+SELECT COUNT(salary) 'Salaries 1 STD of Current Highest Salary', 
+					(COUNT(salary) / (SELECT COUNT(salary)
+																	FROM salaries)) * 100 'Percent of total salaries'
+FROM salaries
+WHERE to_date = '9999-01-01' 
+	AND salary >= ((SELECT MAX(salary) 
+								FROM salaries 
+										WHERE to_date = '9999-01-01') - (SELECT STDDEV(salary)
+																												FROM salaries ));
+
 SELECT * FROM current_dept_emp LIMIT 2;
 SELECT * FROM departments LIMIT 2;
 SELECT * FROM dept_emp LIMIT 2;
