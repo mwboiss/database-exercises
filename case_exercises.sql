@@ -32,6 +32,8 @@ SELECT COUNT(CASE WHEN birth_date < '1960-01-01'
 												END) 'Born in the 1960\'s'
 FROM employees;
 
+/* SELECT 
+		CONCAT(SUBSTR(birth_year,1,3), '0') */
 #Answer: 50:182886, 60:117138, I chose only 50's and 60's because I checked the data first I hope that this is all that is needed.
 
 #Problem 4
@@ -55,4 +57,5 @@ SELECT CASE
 FROM salaries s
 	JOIN dept_emp de USING(emp_no)
 		JOIN departments d USING(dept_no)
+WHERE s.to_date > NOW() AND de.to_date > NOW()
 GROUP BY Department_Group;
