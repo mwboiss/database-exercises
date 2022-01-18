@@ -1,1 +1,1 @@
-This repository is for performing an exercise in using mysql and git/github.
+This repository is for performing exercises in using mysql and git/github for Codeup.
