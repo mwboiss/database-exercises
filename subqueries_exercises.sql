@@ -64,6 +64,46 @@ WHERE to_date = '9999-01-01'
 										WHERE to_date = '9999-01-01') - (SELECT STDDEV(salary)
 																												FROM salaries ));
 
+#Answer: 78 curent salaries are within 1 standard deviation of the urrent highest salary
+
+#Bonus 1: Find all the deaprtment names that currently have female managers.
+
+SELECT dept_name
+	FROM departments
+	WHERE dept_no IN(
+								SELECT dept_no
+								FROM dept_manager
+								WHERE to_date = '9999-01-01'
+								       AND emp_no IN(
+												          SELECT emp_no												              FROM employees
+												                  WHERE gender = 'f'));
+
+#Bonus 2: Find the first and last name of the employee with the highest salary.
+
+SELECT CONCAT(first_name, ' ', last_name) 'Highest Paid Current Employee'
+FROM employees 
+WHERE emp_no IN(
+							SELECT emp_no
+						FROM salaries
+						WHERE to_date = '9999-01-01'
+								AND salary IN(
+												SELECT MAX(salary)
+												FROM salaries));
+
+# Bonus 3: Find the deparment name that the employee with the highest salry works in.
+SELECT dept_name
+FROM departments
+WHERE dept_no IN(
+							SELECT dept_no
+						FROM dept_emp
+						WHERE emp_no IN(
+												SELECT emp_no
+												FROM salaries
+												WHERE salary IN(
+												                SELECT MAX(salary)
+												                           FROM salaries
+												                                   WHERE to_date = '9999-01-01')));
+
 SELECT * FROM current_dept_emp LIMIT 2;
 SELECT * FROM departments LIMIT 2;
 SELECT * FROM dept_emp LIMIT 2;
