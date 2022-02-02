@@ -156,66 +156,22 @@ FROM (
 			ON d.dept_no = de.dept_no 
 		WHERE de.to_date = '9999-01-01' AND mn.to_date = '9999-01-01';
 	
-#Problem 12 DID NOT FINISH , Attempts below.
-SELECT d.dept_name 'Department Name', CONCAT(e.first_name, ' ', e.last_name) 'Employee Name', MAX(s.salary) 'Highest Salary'
+#Problem 12: Who is the highest paid employee within each deparment?
+
+SELECT d.dept_name 'Department Name', CONCAT(e.first_name,' ',e.last_name) 'Employee Name', s.salary 'Highest Salary'
 FROM departments d
 	JOIN dept_emp de
-		ON d.dept_no = de.dept_no
+		USING(dept_no)
 	JOIN salaries s
-		ON de.emp_no = s.emp_no
-	JOIN (
-		SELECT e.first_name, e.last_name
-		FROM employees e
-		JOIN salaries AS s
-			ON e.emp_no = s.emp_no
-		JOIN dept_emp AS de
-			ON s.emp_no = de.emp_no
-		JOIN departments AS d
-			ON d.dept_no = de.dept_no
-	)	
-	GROUP BY d.dept_name;
-
-SELECT hs.Department_Name, CONCAT(e.first_name, ' ', e.last_name) 'Employee Name', hs.Highest_Salary 
-FROM (
-	SELECT d.dept_name Department_Name, 
-						MAX(s.salary) Highest_Salary
-	FROM departments d
-		JOIN dept_emp de
-			ON d.dept_no = de.dept_no
-		JOIN salaries s
-			ON de.emp_no = s.emp_no
-	GROUP BY d.dept_name
-	) hs
-	JOIN departments d
-		ON d.dept_name = hs.Department_Name
-	JOIN dept_emp de
-		ON de.dept_no = d.dept_no
+		USING(emp_no)
 	JOIN employees e
-		ON de.emp_no = e.emp_no;
-
-SELECT d.dept_name, ROUND(AVG(s.salary), 0) average_salary
-	GROUP BY d.dept_name
-	ORDER BY average_salary DESC;
-
-SELECT e.first_name, e.last_name
-	WHERE s.to_date = '9999-01-01' AND d.dept_name = 'Marketing'
-	ORDER BY s.salary DESC
-	LIMIT 1;
-
-SELECT * FROM current_dept_emp LIMIT 2;
-SELECT * FROM departments LIMIT 2;
-SELECT * FROM dept_emp LIMIT 2;
-SELECT * FROM dept_emp_latest_date LIMIT 2;
-SELECT * FROM dept_manager LIMIT 2;
-SELECT * FROM employees LIMIT 2;
-SELECT * FROM salaries LIMIT 2;
-SELECT * FROM titles LIMIT 2;
-
-SELECT Department, Highest Salary, Employee
-FROM departments d
-	JOIN dept_emp de
-		ON de.dept_no = d.dept_no
-	JOIN salaries salaries
-		ON s.emp_no = de.emp_no
-	JOIN employees e
-		ON e.emp_no = s.emp_no
+		USING(emp_no)
+WHERE (d.dept_name, s.salary)
+IN (SELECT d.dept_name, MAX(s.salary)
+		FROM departments d
+			JOIN dept_emp de
+				USING(dept_no)
+			JOIN salaries s
+				USING(emp_no)
+			WHERE s.to_date = '9999-01-01'
+		  GROUP BY d.dept_name);
